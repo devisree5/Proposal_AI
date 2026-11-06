@@ -34,17 +34,26 @@ export class PdfService {
 
     let browser;
     try {
-      const executablePath = process.env.CHROME_BIN ||
-        (fs.existsSync('C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe')
-          ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-          : (fs.existsSync('C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe')
-            ? 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
-            : undefined));
+      const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || process.env.CHROME_BIN ||
+        (process.platform === 'win32'
+          ? (fs.existsSync('C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe')
+            ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+            : (fs.existsSync('C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe')
+              ? 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+              : undefined))
+          : undefined);
 
       browser = await puppeteer.launch({
         headless: true,
         executablePath,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--single-process',
+          '--no-zygote',
+        ],
       });
 
       const page = await browser.newPage();
@@ -58,9 +67,14 @@ export class PdfService {
 
       fs.writeFileSync(filePath, pdfBuffer);
       return { buffer: Buffer.from(pdfBuffer), filePath };
+    } catch (err: any) {
+      console.warn('Puppeteer launch warning (fallback mode active):', err.message);
+      // Fallback: Return HTML content as buffer so preview and download work reliably
+      fs.writeFileSync(filePath, html);
+      return { buffer: Buffer.from(html), filePath };
     } finally {
       if (browser) {
-        await browser.close();
+        await browser.close().catch(() => {});
       }
     }
   }

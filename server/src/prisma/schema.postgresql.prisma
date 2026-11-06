@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model EmailRequest {
+  id               String                 @id @default(uuid())
+  messageId        String                 @unique
+  senderName       String
+  senderEmail      String
+  subject          String
+  rawBody          String                 @db.Text
+  receivedAt       DateTime               @default(now())
+  status           String                 @default("PENDING")
+  isServiceRequest Boolean                @default(true)
+  extraction       RequirementExtraction?
+  proposals        Proposal[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+}
+
+model RequirementExtraction {
+  id                 String       @id @default(uuid())
+  emailRequestId     String       @unique
+  emailRequest       EmailRequest @relation(fields: [emailRequestId], references: [id], onDelete: Cascade)
+  clientName         String?
+  companyName        String?
+  contactEmail       String?
+  contactPhone       String?
+  projectName        String
+  projectDescription String       @db.Text
+  scopeItems         String       @db.Text
+  deliverables       String       @db.Text
+  expectedTimeline   String?
+  budget             String?
+  missingOrUnclear   String?      @db.Text
+  rawAiResponse      String?      @db.Text
+  isVerified         Boolean      @default(false)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model CatalogItem {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  category    String
+  description String   @db.Text
+  unitType    String
+  defaultRate Float
+  keywords    String   @db.Text
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Proposal {
+  id                 String        @id @default(uuid())
+  proposalNumber     String        @unique
+  emailRequestId     String?
+  emailRequest       EmailRequest? @relation(fields: [emailRequestId], references: [id], onDelete: SetNull)
+  templateId         String        @default("modern-minimalist")
+  title              String
+  companyName        String        @default("PropFlow Solutions Inc.")
+  companyLogo        String?
+  companyEmail       String        @default("proposals@propflow.ai")
+  companyPhone       String        @default("+1 (555) 789-2044")
+  companyAddress     String        @default("450 Market Street, Suite 800, San Francisco, CA")
+  clientName         String
+  clientCompany      String?
+  clientEmail        String
+  clientPhone        String?
+  overview           String        @db.Text
+  scopeItems         String        @db.Text
+  deliverables       String        @db.Text
+  pricingItems       String        @db.Text
+  subtotal           Float
+  taxPercent         Float         @default(10.0)
+  taxAmount          Float
+  discountAmount     Float         @default(0.0)
+  totalAmount        Float
+  timelineWeeks      Int?
+  timelineMilestones String?       @db.Text
+  termsAndConditions String        @db.Text
+  status             String        @default("DRAFT")
+  pdfPath            String?
+  sentAt             DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  entityType String
+  entityId   String
+  action     String
+  details    String?  @db.Text
+  createdAt  DateTime @default(now())
+}
