@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { EmailRequest, Proposal, CatalogItem, PricingLineItem } from '../types/index.js';
 
+const API_ORIGIN = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/+$/, '') : '';
+const BASE_URL = API_ORIGIN ? `${API_ORIGIN}/api` : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -60,11 +63,11 @@ export const ProposalApi = {
   },
 
   getPreviewUrl: (id: string, templateId?: string) => {
-    return `/api/proposals/${id}/preview${templateId ? `?templateId=${templateId}` : ''}`;
+    return `${BASE_URL}/proposals/${id}/preview${templateId ? `?templateId=${templateId}` : ''}`;
   },
 
   getDownloadUrl: (id: string) => {
-    return `/api/proposals/${id}/download`;
+    return `${BASE_URL}/proposals/${id}/download`;
   },
 
   sendEmail: async (id: string, payload: { recipientEmail?: string; customMessage?: string }) => {
