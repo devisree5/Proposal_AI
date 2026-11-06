@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileText, Search, Download, Send, Eye, Clock, CheckCircle2, Building, DollarSign } from 'lucide-react';
-import { Proposal } from '../types/index.js';
-import { ProposalApi } from '../services/api.js';
+import { Proposal } from '../types';
+import { ProposalApi } from '../services/api';
 
 interface ProposalListProps {
   proposals: Proposal[];

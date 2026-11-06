@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "AI-Powered Email-to-Proposal Generation System",
   "scripts": {
+    "install": "npm install --prefix client",
+    "build": "npm run build --prefix client",
+    "dev": "npm run dev --prefix client",
     "dev:server": "npm --prefix server run dev",
     "dev:client": "npm --prefix client run dev"
   }

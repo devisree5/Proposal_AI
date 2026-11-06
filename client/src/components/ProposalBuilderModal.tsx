@@ -3,8 +3,8 @@ import {
   X, Check, Sparkles, Plus, Trash2, ArrowRight, ArrowLeft, 
   DollarSign, Calculator, Layers, FileText, CheckCircle2, AlertTriangle, ShieldAlert 
 } from 'lucide-react';
-import { CatalogItem, PricingLineItem } from '../types/index.js';
-import { CatalogApi, ProposalApi } from '../services/api.js';
+import { CatalogItem, PricingLineItem } from '../types';
+import { CatalogApi, ProposalApi } from '../services/api';
 
 interface ProposalBuilderModalProps {
   initialData: any;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Database, Search, Plus, Check, DollarSign, Tag, Clock, Layers } from 'lucide-react';
-import { CatalogItem } from '../types/index.js';
-import { CatalogApi } from '../services/api.js';
+import { CatalogItem } from '../types';
+import { CatalogApi } from '../services/api';
 
 interface CatalogManagerProps {
   catalog: CatalogItem[];

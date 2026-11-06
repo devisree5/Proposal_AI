@@ -3,7 +3,7 @@ import {
   Inbox, FileCheck, Send, DollarSign, Sparkles, ArrowRight, 
   RefreshCw, CheckCircle, Clock, AlertTriangle, ShieldCheck, FileText 
 } from 'lucide-react';
-import { EmailRequest, Proposal } from '../types/index.js';
+import { EmailRequest, Proposal } from '../types';
 
 interface DashboardProps {
   emails: EmailRequest[];

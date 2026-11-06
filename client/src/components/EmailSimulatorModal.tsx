@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Sparkles, Send, Smartphone, ShoppingBag, BrainCircuit, PenTool, CheckCircle2 } from 'lucide-react';
-import { EmailApi } from '../services/api.js';
+import { EmailApi } from '../services/api';
 
 interface EmailSimulatorModalProps {
   onClose: () => void;

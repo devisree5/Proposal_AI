@@ -3,8 +3,8 @@ import {
   X, Download, Send, CheckCircle2, RefreshCw, LayoutTemplate, 
   ExternalLink, Mail, ArrowRight, ShieldCheck, FileText 
 } from 'lucide-react';
-import { Proposal } from '../types/index.js';
-import { ProposalApi } from '../services/api.js';
+import { Proposal } from '../types';
+import { ProposalApi } from '../services/api';
 
 interface ProposalPreviewModalProps {
   proposal: Proposal;

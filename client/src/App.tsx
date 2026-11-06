@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/Navbar.js';
-import { Dashboard } from './components/Dashboard.js';
-import { EmailList } from './components/EmailList.js';
-import { ProposalList } from './components/ProposalList.js';
-import { CatalogManager } from './components/CatalogManagerModal.js';
-import { RequirementEditorModal } from './components/RequirementEditorModal.js';
-import { ProposalBuilderModal } from './components/ProposalBuilderModal.js';
-import { ProposalPreviewModal } from './components/ProposalPreviewModal.js';
-import { EmailSimulatorModal } from './components/EmailSimulatorModal.js';
-import { EmailApi, ProposalApi, CatalogApi } from './services/api.js';
-import { EmailRequest, Proposal, CatalogItem } from './types/index.js';
-import { AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Navbar } from './components/Navbar';
+import { Dashboard } from './components/Dashboard';
+import { EmailList } from './components/EmailList';
+import { ProposalList } from './components/ProposalList';
+import { CatalogManager } from './components/CatalogManagerModal';
+import { RequirementEditorModal } from './components/RequirementEditorModal';
+import { ProposalBuilderModal } from './components/ProposalBuilderModal';
+import { ProposalPreviewModal } from './components/ProposalPreviewModal';
+import { EmailSimulatorModal } from './components/EmailSimulatorModal';
+import { EmailApi, ProposalApi, CatalogApi } from './services/api';
+import { EmailRequest, Proposal, CatalogItem } from './types';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'emails' | 'proposals' | 'catalog'>('dashboard');

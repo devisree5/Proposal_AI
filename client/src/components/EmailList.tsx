@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Search, Clock, CheckCircle2, ChevronRight, PlusCircle, RefreshCw, AlertCircle, FileText } from 'lucide-react';
-import { EmailRequest } from '../types/index.js';
+import { EmailRequest } from '../types';
 
 interface EmailListProps {
   emails: EmailRequest[];

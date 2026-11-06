@@ -3,7 +3,7 @@ import {
   X, Check, AlertCircle, Sparkles, Plus, Trash2, Edit3, 
   ArrowRight, ShieldCheck, DollarSign, Calendar, Mail, Phone, Building, Layers 
 } from 'lucide-react';
-import { EmailRequest, PricingLineItem } from '../types/index.js';
+import { EmailRequest, PricingLineItem } from '../types';
 
 interface RequirementEditorModalProps {
   email: EmailRequest;
