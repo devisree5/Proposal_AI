@@ -2,6 +2,30 @@
 
 > An enterprise-grade B2B sales automation platform that converts customer inquiry emails into verified, customizable, professional PDF business proposals in seconds.
 
+📚 **[Click Here to Read the Full Evaluator Guide & Technical Manual](./EVALUATOR_GUIDE_AND_DOCUMENTATION.md)**
+
+---
+
+## Quickstart for Evaluators (2 Minutes)
+
+```bash
+# 1. Clone repository
+git clone https://github.com/devisree5/Proposal_AI.git
+cd Proposal_AI
+
+# 2. Install dependencies & initialize database (1 command)
+npm run setup
+
+# 3. Start backend API in Terminal 1 (Port 5000)
+npm run dev:server
+
+# 4. Start frontend dashboard in Terminal 2 (Port 5173)
+npm run dev:client
+```
+Open **`http://localhost:5173`** in your browser.
+
+> **Automated Grading**: You can verify all 12 core features programmatically by running `npm run test:features` while the backend is running.
+
 ---
 
 ## 1. System Overview

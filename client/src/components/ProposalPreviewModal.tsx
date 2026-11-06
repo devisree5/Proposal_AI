@@ -71,6 +71,18 @@ ${proposal.companyName}`);
     }
   };
 
+  const handleDownload = (e: React.MouseEvent) => {
+    if (proposal.id.startsWith('prop-')) {
+      e.preventDefault();
+      const iframe = document.querySelector('iframe') as HTMLIFrameElement;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        return;
+      }
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
       <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full h-[95vh] flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
@@ -120,6 +132,7 @@ ${proposal.companyName}`);
           <div className="flex items-center space-x-2">
             <a
               href={downloadUrl}
+              onClick={handleDownload}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold shadow-sm transition"

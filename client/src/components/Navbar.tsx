@@ -7,6 +7,7 @@ interface NavbarProps {
   onOpenSimulator: () => void;
   onSyncInbox: () => void;
   isSyncing: boolean;
+  isBackendOnline?: boolean | null;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,6 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenSimulator,
   onSyncInbox,
   isSyncing,
+  isBackendOnline,
 }) => {
   return (
     <header className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-40 shadow-md">
@@ -86,6 +88,28 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center space-x-2.5">
+          {isBackendOnline !== null && (
+            <span
+              className={`hidden lg:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
+                isBackendOnline
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                  : 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+              }`}
+              title={
+                isBackendOnline
+                  ? 'Connected to local Node.js backend on port 5000'
+                  : 'Frontend demo mode. Run npm run dev:server to connect full AI & IMAP backend.'
+              }
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isBackendOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
+                }`}
+              />
+              <span>{isBackendOnline ? 'API Online' : 'Demo / Static Mode'}</span>
+            </span>
+          )}
+
           <button
             onClick={onSyncInbox}
             disabled={isSyncing}

@@ -26,6 +26,7 @@ export function App() {
   const [showSimulator, setShowSimulator] = useState(false);
 
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isBackendOnline, setIsBackendOnline] = useState<boolean | null>(null);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'info') => {
@@ -33,7 +34,21 @@ export function App() {
     setTimeout(() => setNotification(null), 4000);
   };
 
+  const checkBackendHealth = async () => {
+    try {
+      const res = await fetch('/api/health');
+      if (res.ok) {
+        setIsBackendOnline(true);
+      } else {
+        setIsBackendOnline(false);
+      }
+    } catch {
+      setIsBackendOnline(false);
+    }
+  };
+
   const loadAllData = async () => {
+    checkBackendHealth();
     try {
       const [eData, pData, cData] = await Promise.all([
         EmailApi.getAll().catch(() => []),
@@ -98,6 +113,7 @@ export function App() {
         onOpenSimulator={() => setShowSimulator(true)}
         onSyncInbox={handleSyncInbox}
         isSyncing={isSyncing}
+        isBackendOnline={isBackendOnline}
       />
 
       {/* Notification Toast */}
