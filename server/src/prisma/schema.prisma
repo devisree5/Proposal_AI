@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model EmailRequest {
+  id               String                 @id @default(uuid())
+  messageId        String                 @unique
+  senderName       String
+  senderEmail      String
+  subject          String
+  rawBody          String
+  receivedAt       DateTime               @default(now())
+  status           String                 @default("PENDING") // PENDING, EXTRACTED, PROPOSAL_DRAFT, PROPOSAL_GENERATED, SENT, ARCHIVED
+  isServiceRequest Boolean                @default(true)
+  extraction       RequirementExtraction?
+  proposals        Proposal[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+}
+
+model RequirementExtraction {
+  id                 String       @id @default(uuid())
+  emailRequestId     String       @unique
+  emailRequest       EmailRequest @relation(fields: [emailRequestId], references: [id], onDelete: Cascade)
+  clientName         String?
+  companyName        String?
+  contactEmail       String?
+  contactPhone       String?
+  projectName        String
+  projectDescription String
+  scopeItems         String       // JSON string array
+  deliverables       String       // JSON string array of { title, description, quantity }
+  expectedTimeline   String?
+  budget             String?
+  missingOrUnclear   String?      // JSON string array
+  rawAiResponse      String?
+  isVerified         Boolean      @default(false)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model CatalogItem {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  category    String   // Engineering, Design, DevOps & Cloud, QA, Consulting, Retainer
+  description String
+  unitType    String   // hour, day, milestone, month, unit
+  defaultRate Float
+  keywords    String   // comma-separated search terms for matching
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Proposal {
+  id                 String        @id @default(uuid())
+  proposalNumber     String        @unique
+  emailRequestId     String?
+  emailRequest       EmailRequest? @relation(fields: [emailRequestId], references: [id], onDelete: SetNull)
+  templateId         String        @default("modern-minimalist") // modern-minimalist, corporate-executive, creative-studio
+  title              String
+  companyName        String        @default("PropFlow Solutions Inc.")
+  companyLogo        String?
+  companyEmail       String        @default("proposals@propflow.ai")
+  companyPhone       String        @default("+1 (555) 789-2044")
+  companyAddress     String        @default("450 Market Street, Suite 800, San Francisco, CA")
+  clientName         String
+  clientCompany      String?
+  clientEmail        String
+  clientPhone        String?
+  overview           String
+  scopeItems         String        // JSON array of strings
+  deliverables       String        // JSON array of objects
+  pricingItems       String        // JSON array of { code, name, description, unitType, quantity, unitRate, total, isCustom }
+  subtotal           Float
+  taxPercent         Float         @default(10.0)
+  taxAmount          Float
+  discountAmount     Float         @default(0.0)
+  totalAmount        Float
+  timelineWeeks      Int?
+  timelineMilestones String?       // JSON array of { phase, duration, description }
+  termsAndConditions String
+  status             String        @default("DRAFT") // DRAFT, GENERATED, SENT, ACCEPTED, REJECTED
+  pdfPath            String?
+  sentAt             DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  entityType String   // EMAIL, PROPOSAL, CATALOG
+  entityId   String
+  action     String   // RECEIVED, EXTRACTED, CREATED, GENERATED_PDF, SENT_EMAIL
+  details    String?
+  createdAt  DateTime @default(now())
+}
